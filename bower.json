@@ -1,0 +1,15 @@
+{
+  "name": "Throwdown",
+  "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.0.0-rc1",
+    "angular-fire": "~0.2.0"
+  }
+}

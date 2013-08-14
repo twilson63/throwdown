@@ -1,0 +1,96 @@
+<!doctype html>
+<html ng-app="App">
+  <head>
+    <meta charset='utf-8'>
+    <title>Database Throwdown</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <style>
+      body {
+        padding-top: 75px;
+      }
+      td {
+        font-size: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <a class="navbar-brand" href="/">Database Throwdown</a>
+    </div>
+    <div class="container" ng-controller="MainCtrl">
+      <table class="table">
+        <tr>
+          <th>Use Case</th>
+          <th>Sql</th>
+          <th>NoSql</th>
+          <th colspan=2>Vote</th>
+        </tr>
+        <tr>
+          <th>CRM</th>
+          <td>{{crmSql.length}}</td>
+          <td>{{crmNosql.length}}</td>
+          <td>
+            <button class="btn btn-primary" ng-click="vote('crmSql')" ng-disabled="crm">Sql</button>
+          </td>          
+          <td>
+            <button class="btn btn-info" ng-click="vote('crmNosql')" ng-disabled="crm">NoSql</button>
+          </td>
+        </tr>
+        <tr>
+          <th>CMS</th>
+          <td>{{cmsSql.length}}</td>
+          <td>{{cmsNosql.length}}</td>
+          <td>
+            <button class="btn btn-primary" ng-click="vote('cmsSql')" ng-disabled="cms">Sql</button>
+          </td>
+          <td>
+            <button class="btn btn-info" ng-click="vote('cmsNosql')" ng-disabled="cms">Nosql</button>
+          </td>        
+        </tr>
+        <tr>
+          <th>Social</th>
+          <td>{{socSql.length}}</td>
+          <td>{{socNosql.length}}</td>
+          <td>
+            <button class="btn btn-primary" ng-click="vote('socSql')" ng-disabled="soc">Sql</button>
+          </td>
+          <td>
+            <button class="btn btn-info" ng-click="vote('socNosql')" ng-disabled="soc">NoSql</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+    <script src="bower_components/angular-fire/angularFire.js"></script>
+    <script>
+      angular.module('App', ['firebase'])
+        .controller('MainCtrl', function($scope, angularFire) {
+          var crmSqlUrl = 'https://throwdown.firebaseio.com/crmSql';
+          angularFire(crmSqlUrl, $scope, 'crmSql', []);
+
+          var crmNosqlUrl = 'https://throwdown.firebaseio.com/crmNosql';
+          angularFire(crmNosqlUrl, $scope, 'crmNosql', []);
+
+          var cmsSqlUrl = 'https://throwdown.firebaseio.com/cmsSql';
+          angularFire(cmsSqlUrl, $scope, 'cmsSql', []);
+
+          var cmsNosqlUrl = 'https://throwdown.firebaseio.com/cmsNosql';
+          angularFire(cmsNosqlUrl, $scope, 'cmsNosql', []);
+
+          var socSqlUrl = 'https://throwdown.firebaseio.com/socSql';
+          angularFire(socSqlUrl, $scope, 'socSql', []);
+
+          var socNosqlUrl = 'https://throwdown.firebaseio.com/socNosql';
+          angularFire(socNosqlUrl, $scope, 'socNosql', []);
+
+          $scope.vote = function(useCaseSelection) {
+            var pre = useCaseSelection[0] + useCaseSelection[1] + 
+              useCaseSelection[2];
+            $scope[pre] = true;
+            $scope[useCaseSelection].push('voted');
+          };
+        });
+    </script>
+  </body>
+</html>
