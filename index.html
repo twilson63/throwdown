@@ -2,6 +2,7 @@
 <html ng-app="App">
   <head>
     <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Database Throwdown</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <style>
@@ -17,7 +18,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <a class="navbar-brand" href="/">Database Throwdown</a>
     </div>
-    <div class="container" ng-controller="MainCtrl">
+    <div class="container" ng-controller="MainCtrl"> 
       <table class="table">
         <tr>
           <th>Use Case</th>
@@ -61,11 +62,35 @@
       </table>
     </div>
     <script src="bower_components/angular/angular.js"></script>
+    <script type='text/javascript'
+              src='https://cdn.firebase.com/v0/firebase-simple-login.js'>
+            </script>
+    <script type='text/javascript'
+              src='https://login.persona.org/include.js'>
+            </script>
     <script src="https://cdn.firebase.com/v0/firebase.js"></script>
     <script src="bower_components/angular-fire/angularFire.js"></script>
     <script>
       angular.module('App', ['firebase'])
         .controller('MainCtrl', function($scope, angularFire) {
+          $scope.crm = true;
+          $scope.cms = true;
+          $scope.soc = true;
+          var ref = new Firebase('https://throwdown.firebaseio.com');
+          window.auth = new FirebaseSimpleLogin(ref, function(err, user) {
+            if (err) { console.log(err); }
+            if (user) {
+              $scope.authorized = true;
+              localStorage.setItem('user', user.email);
+              if (user.email) {
+                $scope.crm = false;
+                $scope.cms = false;
+                $scope.soc = false;
+              }
+            }
+          })
+          auth.login('persona');
+
           var crmSqlUrl = 'https://throwdown.firebaseio.com/crmSql';
           angularFire(crmSqlUrl, $scope, 'crmSql', []);
 
@@ -87,8 +112,16 @@
           $scope.vote = function(useCaseSelection) {
             var pre = useCaseSelection[0] + useCaseSelection[1] + 
               useCaseSelection[2];
+            var email = localStorage.getItem('user');
             $scope[pre] = true;
-            $scope[useCaseSelection].push('voted');
+            var noSql = $scope[pre + 'Nosql'];
+            var sql = $scope[pre + 'Sql'];
+
+            if (noSql.indexOf(email) < 0 && sql.indexOf(email) < 0) {
+              $scope[useCaseSelection].push(email);
+            } else {
+              alert('Already Voted!');
+            }
           };
         });
     </script>
