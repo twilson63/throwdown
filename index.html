@@ -8,7 +8,7 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <style>
       body {
-        padding-top: 75px;
+        padding-top: 90px;
       }
       td {
         font-size: 2em;
@@ -19,34 +19,20 @@
     <header class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-            <i class="icon-bar"></i>
-            <i class="icon-bar"></i>
-            <i class="icon-bar"></i>
-          </button>
+          <a class="navbar-brand" href="/">Db Throwdown</a>
+          <a href="#" class="btn" ng-click="login('github')">
+            <i class="icon-twitter"></i>
+            Twitter
+          </a>
+          <a href="#" class="btn" ng-click="login('github')">
+            <i class="icon-github-alt"></i>
+            Github
+          </a>
+           <a href="#" class="btn" ng-click="login('persona')">
+              <i class="icon-lock"></i>
+              Persona
+          </a>
         </div>
-        <a class="navbar-brand" href="/">Db Throwdown</a>
-        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="#" class="btn" ng-click="login('github')">
-                <i class="icon-twitter"></i>
-                Sign in w/ Twitter
-              </a>
-            </li>
-            <li>
-              <a href="#" class="btn" ng-click="login('github')">
-                <i class="icon-github"></i>
-                Sign in w/ Github
-              </a>
-            </li>
-            <li>
-              <a href="#" class="btn" ng-click="login('persona')">
-                <i class="icon-lock"></i>
-                Sign in w/ Persona
-              </a>
-            </li>
-          </ul>
         </nav>
       </div>
     </header>
@@ -93,8 +79,6 @@
         </tr>
       </table>
     </div>
-    <script src="bower_components/jquery/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script type='text/javascript'
               src='https://cdn.firebase.com/v0/firebase-simple-login.js'>
