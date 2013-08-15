@@ -1,10 +1,11 @@
 <!doctype html>
 <html ng-app="App">
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Database Throwdown</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <style>
       body {
         padding-top: 75px;
@@ -14,11 +15,33 @@
       }
     </style>
   </head>
-  <body>
+  <body ng-controller="MainCtrl">
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <a class="navbar-brand" href="/">Database Throwdown</a>
+      <a class="navbar-brand" href="/">Db Throwdown</a>
+      <nav class="navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#" class="btn" ng-click="login('github')">
+              <i class="icon-twitter"></i>
+              Sign in w/ Twitter
+            </a>
+          </li>
+          <li>
+            <a href="#" class="btn" ng-click="login('github')">
+              <i class="icon-github"></i>
+              Sign in w/ Github
+            </a>
+          </li>
+          <li>
+            <a href="#" class="btn" ng-click="login('persona')">
+              <i class="icon-lock"></i>
+              Sign in w/ Persona
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <div class="container" ng-controller="MainCtrl"> 
+    <div class="container"> 
       <table class="table">
         <tr>
           <th>Use Case</th>
@@ -81,15 +104,18 @@
             if (err) { console.log(err); }
             if (user) {
               $scope.authorized = true;
-              localStorage.setItem('user', user.email);
-              if (user.email) {
+              localStorage.setItem('user', user.id);
+              if (user.id) {
                 $scope.crm = false;
                 $scope.cms = false;
                 $scope.soc = false;
               }
             }
-          })
-          auth.login('persona');
+          });
+          
+          $scope.login = function(source) {
+            auth.login(source);
+          };
 
           var crmSqlUrl = 'https://throwdown.firebaseio.com/crmSql';
           angularFire(crmSqlUrl, $scope, 'crmSql', []);
@@ -112,13 +138,13 @@
           $scope.vote = function(useCaseSelection) {
             var pre = useCaseSelection[0] + useCaseSelection[1] + 
               useCaseSelection[2];
-            var email = localStorage.getItem('user');
+            var user = localStorage.getItem('user');
             $scope[pre] = true;
             var noSql = $scope[pre + 'Nosql'];
             var sql = $scope[pre + 'Sql'];
 
-            if (noSql.indexOf(email) < 0 && sql.indexOf(email) < 0) {
-              $scope[useCaseSelection].push(email);
+            if (noSql.indexOf(user) < 0 && sql.indexOf(user) < 0) {
+              $scope[useCaseSelection].push(user);
             } else {
               alert('Already Voted!');
             }
