@@ -21,7 +21,13 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="/">Db Throwdown</a>
           <div class="pull-right">
-          <a href="#" class="btn" ng-click="login('twitter')">
+            <button class="navbar-toggle" type="button" ng-click="showlogin()">
+              <i class="icon-bar"></i>
+              <i class="icon-bar"></i>
+              <i class="icon-bar"></i>
+            </button>
+            <div ng-show="loginForm">
+            <a href="#" class="btn" ng-click="login('twitter')">
             <i class="icon-twitter"></i>
             Twitter
           </a>
@@ -32,13 +38,14 @@
            <a href="#" class="btn" ng-click="login('persona')">
               <i class="icon-lock"></i>
               Persona
-          </a>
+            </a>
+          </div>
           </div>
         </div>
         </nav>
       </div>
     </header>
-    <div class="container"> 
+    <div class="container" ng-cloak> 
       <table class="table">
         <tr>
           <th>Use Case</th>
@@ -97,9 +104,10 @@
           $scope.cms = true;
           $scope.soc = true;
           var ref = new Firebase('https://throwdown.firebaseio.com');
-          window.auth = new FirebaseSimpleLogin(ref, function(err, user) {
+          window.auth = new FirebaseSimpleLogin(ref, function(err, user) { 
             if (err) { console.log(err); }
             if (user) {
+              $scope.loginForm = false;
               $scope.authorized = true;
               localStorage.setItem('user', user.id);
               if (user.id) {
@@ -109,7 +117,6 @@
               }
             }
           });
-          
           $scope.login = function(source) {
             auth.login(source);
           };
@@ -145,6 +152,10 @@
             } else {
               alert('Already Voted!');
             }
+          };
+
+          $scope.showlogin = function() {
+            $scope.loginForm = !$scope.loginForm;
           };
         });
     </script>
